@@ -11,8 +11,11 @@ d3.csv('data/HamiltonCountyData.csv')
 
       data.forEach(function (d)
       {
-  		  medianPerYear.push( {"year": d.Year, "medianAQI":d.MedianAQI});
-        
+  		  //medianPerYear.push( {"year": d.Year, "medianAQI":d.MedianAQI, "percentile90th": d.Percentile90thAQI, "maxAQI": d.MaxAQI});
+        medianPerYear.push({"year": d.Year, "value":d.MedianAQI, "type": "median"})
+        medianPerYear.push({"year": d.Year, "value":d.MaxAQI, "type": "max"})
+        medianPerYear.push({"year": d.Year, "value":d.Percentile90thAQI, "type": "percent"})
+
       })
       console.log('median year', medianPerYear);
   	//}

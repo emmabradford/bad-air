@@ -1,4 +1,4 @@
-State,County,Year,DayswithAQI,GoodDays,ModerateDays,UnhealthyforSensitiveGroupsDays,UnhealthyDays,VeryUnhealthyDays,HazardousDays,MaxAQI,90thPercentileAQI,MedianAQI,DaysCO,DaysNO2,DaysOzone,DaysSO2,DaysPM2.5,DaysPM10
+State,County,Year,DayswithAQI,GoodDays,ModerateDays,UnhealthyforSensitiveGroupsDays,UnhealthyDays,VeryUnhealthyDays,HazardousDays,MaxAQI,Percentile90thAQI,MedianAQI,DaysCO,DaysNO2,DaysOzone,DaysSO2,DaysPM2.5,DaysPM10
 Ohio,Hamilton,2021,304,162,137,5,0,0,0,140,77,48,0,9,137,3,155,0
 Ohio,Hamilton,2020,366,210,149,7,0,0,0,126,70,48,0,14,123,2,227,0
 Ohio,Harrison,2019,293,290,3,0,0,0,0,59,30,2,236,0,0,0,55,2
