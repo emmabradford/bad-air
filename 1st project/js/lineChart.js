@@ -8,7 +8,9 @@ class LineChart {
         }
 
         this.data = _data;
+       // this.data2= _data2
         console.log(this.data);
+        //console.log(this.data2);
         // Call a class function
         this.initVis();
     }
@@ -96,18 +98,23 @@ class LineChart {
 
           console.log("made circules");
 
-        vis.lines = vis.chart.selectAll('lines')
-            .data([vis.data])
-            .enter()
-            .append('g')
+        // vis.lines = vis.chart.selectAll('lines')
+        //     .data([vis.data])
+        //     .enter()
+        //     .append('g')
             
-        vis.lines.append('path')
-            .attr('stroke', (d) => vis.colorPalette(d.type))
-            .attr('stroke-width', 2)
-            .attr('d', vis.line() )
-            .attr("fill", "none");
+        // vis.chart.append('path')
+        //     .attr('stroke', (d) => vis.colorPalette(d.type))
+        //     .attr('stroke-width', 2)
+        //     .attr('d', d=>vis.line(d.values) )
+        //     .attr("fill", "none");
     
-
+            vis.chart.append('path')
+            .data([vis.data]) 
+            .attr('stroke', (d) => vis.colorPalette(d.type))
+            .attr('fill', 'none')
+            .attr('stroke-width', 2)
+            .attr('d', vis.line);
 
         console.log('made chart');
     }
