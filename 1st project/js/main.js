@@ -3,6 +3,22 @@ d3.csv('data/HamiltonCountyData.csv')
   .then(data => {
   	console.log('Data loading complete. Work with dataset.');
     console.log(data);
+    data.forEach(d=>{
+      d.MedianAQI = +d.MedianAQI;
+      d.DaysCO = +d.DaysCO;
+      d.DaysNO2 = +d.DaysNO2;
+      d.DaysOzone = +d.DaysOzone;
+      d.DaysPM10 = +d.DaysPM10;
+      d.DaysPM2 = +d.DaysPM2;
+      d.DaysSO2 = +d.DaysSO2;
+      d.DayswithAQI = +d.DayswithAQI;
+      d.MaxAQI = +d.MaxAQI;
+      d.Percentile90thAQI = +d.Percentile90thAQI;
+      d.Year = +d.Year;
+      
+    }
+      
+      )
     let minYear = d3.min( data, d => d.Year);
   	let maxYear = d3.max( data, d=> d.Year );
     console.log(maxYear);
@@ -35,12 +51,27 @@ d3.csv('data/HamiltonCountyData.csv')
                         'containerWidth': 1000
 		}, medianPerYear );
 
+    let polutants =[];
+
+    data.forEach(d=>
+      polutants.push({"year": d.Year, "co":d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2,"pm2": d.DaysPM2, "pm10":d.DaysPM10})
+
+    )
+
+    // let stacks = new StackChart({
+			
+		// 	'parentElement': '#stackChart',
+
+		// 	'containerHeight': 1100,
+    //                     'containerWidth': 1000
+		// }, polutants );
+
 
     console.log('num days')
     let numdays = [];
     data.forEach(d=>
-      numdays.push({"year": d.Year, "value":365-d.DayswithAQI,type:"daysaqi"})
-      )
+      numdays.push({"year": d.Year, "value":365-d.DayswithAQI, "type":"daysaqi"})
+    )
 
     let days = new LineChart({
 			
@@ -49,6 +80,7 @@ d3.csv('data/HamiltonCountyData.csv')
 			'containerHeight': 1100,
                         'containerWidth': 1000
 		}, numdays );
+
 
 })
 .catch(error => {

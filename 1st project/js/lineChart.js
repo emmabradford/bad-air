@@ -3,7 +3,7 @@ class LineChart {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 500,
-            containerHeight: _config.containerHeight || 140,
+            containerHeight: _config.containerHeight || 200,
             margin: { top: 10, bottom: 30, right: 50, left: 50 }
         }
 
@@ -26,7 +26,7 @@ class LineChart {
         vis.yValue = d => d.value;
 
         vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
-        vis.colorPalette.domain( "percent", "max", "median" );
+        vis.colorPalette.domain( "percent", "max", "median" , "daysaqi");
 
 
         vis.xScale = d3.scaleLinear()
@@ -34,7 +34,7 @@ class LineChart {
             .range([0, vis.width]);
 
         vis.yScale = d3.scaleLinear()
-            .domain([0, d3.max(vis.data, d => d.value) * 1.5])
+            .domain([-10, d3.max(vis.data, d => d.value)])
             // .domain(d3.extent(vis.data, vis.yValue))
             .range([vis.height, 0])
             .nice();
@@ -60,6 +60,8 @@ class LineChart {
     updateVis() {
         let vis = this;
 
+        vis.groups = d3.group(vis.data, d => d.type)
+
         vis.yAxisG = vis.chart.append('g')
             .attr('class', 'axis y-axis')
             .call(vis.yAxis);
@@ -77,10 +79,26 @@ class LineChart {
 
         console.log('made path');
 
-        vis.line = d3.line()
-            .x(d => vis.xScale(vis.xValue(d)))
-            .y(d => vis.yScale(vis.yValue(d)));
-        console.log('made line');
+        vis.yValueM = d=>vis.data.filter(d=> d.type=="median");
+        console.log()
+    // function(d){
+    //         let x = []
+    //         if(d.type=="median"){
+    //             if(d.value > 0) {
+    //                 x.push(d.value);
+    //             }
+                
+    //         }
+    //         return x;
+    //     };
+
+        // console.log("median data")
+        // console.log(vis.yValueM);
+
+        // vis.line1 = d3.line()
+        //     .x(d => vis.xScale(vis.xValue(d)))
+        //     .y(d => vis.yScale(vis.yValueM(d)));
+        // console.log('made line');
 
         
 
@@ -109,12 +127,26 @@ class LineChart {
         //     .attr('d', d=>vis.line(d.values) )
         //     .attr("fill", "none");
     
-            vis.chart.append('path')
-            .data([vis.data]) 
-            .attr('stroke', (d) => vis.colorPalette(d.type))
-            .attr('fill', 'none')
-            .attr('stroke-width', 2)
-            .attr('d', vis.line);
+            // vis.chart.append('path')
+            // .data([vis.data]) 
+            // .attr('stroke', (d) => vis.colorPalette(d.type))
+            // .attr('fill', 'none')
+            // .attr('stroke-width', 2)
+            // .attr('d', vis.line1);
+
+            vis.chart.selectAll(".line")
+                .data(vis.groups)
+                .join("path")
+                    .attr('stroke', (d) => vis.colorPalette(d[0]))
+                    .attr('fill', "none")
+                    .attr('stroke-width', 2)
+                    .attr('d', function(d){
+                        return d3.line()
+                            .x(function(d){return vis.xScale(d.year);})
+                            .y(function(d) { return vis.yScale(d.value);})
+                            (d[1])
+                    });
+
 
         console.log('made chart');
     }
