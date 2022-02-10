@@ -8,12 +8,13 @@ class LineChart {
         }
 
         this.data = _data;
-       // this.data2= _data2
+        // this.data2= _data2
         console.log(this.data);
         //console.log(this.data2);
         // Call a class function
         this.initVis();
     }
+    
     initVis() {
         console.log("inside line");
 
@@ -26,7 +27,7 @@ class LineChart {
         vis.yValue = d => d.value;
 
         vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
-        vis.colorPalette.domain( "percent", "max", "median" , "daysaqi");
+        vis.colorPalette.domain("percent", "max", "median", "daysaqi");
 
 
         vis.xScale = d3.scaleLinear()
@@ -79,18 +80,18 @@ class LineChart {
 
         console.log('made path');
 
-        vis.yValueM = d=>vis.data.filter(d=> d.type=="median");
+        vis.yValueM = d => vis.data.filter(d => d.type == "median");
         console.log()
-    // function(d){
-    //         let x = []
-    //         if(d.type=="median"){
-    //             if(d.value > 0) {
-    //                 x.push(d.value);
-    //             }
-                
-    //         }
-    //         return x;
-    //     };
+        // function(d){
+        //         let x = []
+        //         if(d.type=="median"){
+        //             if(d.value > 0) {
+        //                 x.push(d.value);
+        //             }
+
+        //         }
+        //         return x;
+        //     };
 
         // console.log("median data")
         // console.log(vis.yValueM);
@@ -100,52 +101,52 @@ class LineChart {
         //     .y(d => vis.yScale(vis.yValueM(d)));
         // console.log('made line');
 
-        
+
 
         vis.circles = vis.chart.selectAll('circle')
-          .data(vis.data)
-          //.enter()
-          .join('circle') // join rerenders the data that is filered
-         .attr('fill', (d) => vis.colorPalette(d.type) )
-          .attr('opacity', .8)
-          .attr('stroke', (d) => vis.colorPalette(d.type) )
-          .attr('stroke-width', 2)
-          .attr('r', 2 ) 
-          .attr('cy', (d) => vis.yScale(d.value) ) 
-          .attr('cx',(d) =>  vis.xScale(d.year) );;
+            .data(vis.data)
+            //.enter()
+            .join('circle') // join rerenders the data that is filered
+            .attr('fill', (d) => vis.colorPalette(d.type))
+            .attr('opacity', .8)
+            .attr('stroke', (d) => vis.colorPalette(d.type))
+            .attr('stroke-width', 2)
+            .attr('r', 2)
+            .attr('cy', (d) => vis.yScale(d.value))
+            .attr('cx', (d) => vis.xScale(d.year));;
 
-          console.log("made circules");
+        console.log("made circules");
 
         // vis.lines = vis.chart.selectAll('lines')
         //     .data([vis.data])
         //     .enter()
         //     .append('g')
-            
+
         // vis.chart.append('path')
         //     .attr('stroke', (d) => vis.colorPalette(d.type))
         //     .attr('stroke-width', 2)
         //     .attr('d', d=>vis.line(d.values) )
         //     .attr("fill", "none");
-    
-            // vis.chart.append('path')
-            // .data([vis.data]) 
-            // .attr('stroke', (d) => vis.colorPalette(d.type))
-            // .attr('fill', 'none')
-            // .attr('stroke-width', 2)
-            // .attr('d', vis.line1);
 
-            vis.chart.selectAll(".line")
-                .data(vis.groups)
-                .join("path")
-                    .attr('stroke', (d) => vis.colorPalette(d[0]))
-                    .attr('fill', "none")
-                    .attr('stroke-width', 2)
-                    .attr('d', function(d){
-                        return d3.line()
-                            .x(function(d){return vis.xScale(d.year);})
-                            .y(function(d) { return vis.yScale(d.value);})
-                            (d[1])
-                    });
+        // vis.chart.append('path')
+        // .data([vis.data]) 
+        // .attr('stroke', (d) => vis.colorPalette(d.type))
+        // .attr('fill', 'none')
+        // .attr('stroke-width', 2)
+        // .attr('d', vis.line1);
+
+        vis.chart.selectAll(".line")
+            .data(vis.groups)
+            .join("path")
+            .attr('stroke', (d) => vis.colorPalette(d[0]))
+            .attr('fill', "none")
+            .attr('stroke-width', 2)
+            .attr('d', function (d) {
+                return d3.line()
+                    .x(function (d) { return vis.xScale(d.year); })
+                    .y(function (d) { return vis.yScale(d.value); })
+                    (d[1])
+            });
 
 
         console.log('made chart');
