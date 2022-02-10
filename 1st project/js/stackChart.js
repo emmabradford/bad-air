@@ -87,7 +87,7 @@ class StackChart {
         //     .range([vis.height, 0])
         //     .nice();
         vis.yScale.domain([0, d3.max(values)])
-       // vis.yScale.domain([0, 600])
+        // vis.yScale.domain([0, 600])
 
         console.log('made scales');
 
@@ -105,36 +105,24 @@ class StackChart {
             .selectAll("category")
             .data(vis.stackedData)
             .join("g")
-            .style("fill", d=>vis.colorPalette(d.key))
-            .attr("class", function(d) {
+            .style("fill", d => vis.colorPalette(d.key))
+            .attr("class", function (d) {
                 color = d.key;
                 //console.log(d.key);
-                `category cat-${d.key}`;})
-            
+                `category cat-${d.key}`;
+            })
+
             .selectAll("rect")
             .data((d) => d)
             .join("rect")
-                // .attr('fill', function(d) {
-                //     // let count = 1;
-                //     // let up = 0
-                //     // while(up<6){
-                //     //     while(count%42!=0){
-                //     //         count++
-                //              console.log(vis.stackedData.keys);
-                //             vis.colorPalette(vis.stackedData.keys[]);
-                //     //     }
-                //     //     up++;
 
-                //     // }
-                //     //console.log(color) 
-                //     })
-                .attr("x", (d) =>
+            .attr("x", (d) =>
                 vis.xScale(d.data.year))
 
-                .attr("y", (d) =>
+            .attr("y", (d) =>
                 //console.log(d)
-                    vis.yScale(d[1]))
-                .attr("height", (d) =>
+                vis.yScale(d[1]))
+            .attr("height", (d) =>
                 // console.log(vis.yScale(d[0]) - vis.yScale(d[1]));
                 // console.log(vis.yScale(d[0]));
                 vis.yScale(d[0]) - vis.yScale(d[1]))

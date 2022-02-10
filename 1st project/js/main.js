@@ -15,6 +15,12 @@ d3.csv('data/HamiltonCountyData.csv')
       d.MaxAQI = +d.MaxAQI;
       d.Percentile90thAQI = +d.Percentile90thAQI;
       d.Year = +d.Year;
+      d.GoodDays = +d.GoodDays;
+      d.ModerateDays = +d.ModerateDays;
+      d.UnhealthyforSensitiveGroupsDays = +d.UnhealthyforSensitiveGroupsDays;
+      d.UnhealthyDays = +d.UnhealthyDays;
+      d.VeryUnhealthyDays = +d.VeryUnhealthyDays;
+      d.HazardousDays = +d.HazardousDays;
 
     }
 
@@ -85,8 +91,34 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 1000
     }, numdays);
 
+    let hazards = [];
+    data.forEach(d => {
+      if (d.Year == 2021) {
+      hazards.push({'key': 'good', 'value':d.GoodDays})
+      hazards.push({'key': 'hazard', 'value':d.HazardousDays})
+      hazards.push({'key': 'unhealthy', 'value':d.UnhealthyDays})
+      hazards.push({'key': 'moderete', 'value':d.ModerateDays})
+      hazards.push({'key': 'unhealthyfor', 'value':d.UnhealthyforSensitiveGroupsDays})
+      hazards.push({'key': 'very', 'value':d.VeryUnhealthyDays})
+    }})
+    // data.forEach(d => {
+    //   if (d.Year == 2021) {
+    //     let sum = d.GoodDays + d.HazardousDays + d.VeryUnhealthyDays + d.UnhealthyforSensitiveGroupsDays + d.UnhealthyDays + d.ModerateDays;
+    //     hazards.push({  'good': d.GoodDays / sum, 'hazard': d.HazardousDays / sum, 'unhealthy': d.UnhealthyDays / sum, 'moderete': d.ModerateDays / sum, 'unhealthyfor': d.UnhealthyforSensitiveGroupsDays / sum, 'very': d.VeryUnhealthyDays / sum })
+    //   }
+    // })
 
+    let haz = new PieChart({
+
+      'parentElement': '#pieChart',
+      'containerHeight': 500,
+      'containerWidth': 1000
+    }, hazards);
   })
+
+
+
+
   .catch(error => {
     console.log(error);
     console.error('Error loading the data');
