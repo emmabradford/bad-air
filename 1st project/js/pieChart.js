@@ -53,11 +53,9 @@ class PieChart {
                 .innerRadius(0)
                 .outerRadius(vis.radius)
             )
-            .attr('fill',function(d){
-                console.log('fill')
-                console.log(d)
+            .attr('fill',(d)=>
                 vis.colorPalette(d.data.key)
-            })
+            )
             .attr("stroke", "black")
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
