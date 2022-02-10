@@ -27,9 +27,9 @@ class StackChart {
             vis.config.margin.top -
             vis.config.margin.bottom;
 
-            vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
-            vis.colorPalette.domain("co", "no2", "ozone", "pm2", "pm10", "so2");
-    
+        vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
+        vis.colorPalette.domain("co", "no2", "ozone", "pm2", "pm10", "so2");
+
         vis.xScale = d3
             .scaleBand()
             .range([0, vis.width])
@@ -60,7 +60,7 @@ class StackChart {
 
         vis.yAxisG = vis.chart.append("g").attr("class", "axis y-axis");
 
-        vis.stack = d3.stack().keys(["co", "wno2", "ozone", "pm2", "pm10", "so2"]);
+        vis.stack = d3.stack().keys(["co", "no2", "ozone", "pm2", "pm10", "so2"]);
 
         vis.updateVis();
     }
@@ -68,15 +68,27 @@ class StackChart {
     updateVis() {
         let vis = this;
 
-        vis.xScale = d3.scaleLinear()
-            .domain(d3.extent(vis.data, vis.xValue)) //d3.min(vis.data, d => d.year), d3.max(vis.data, d => d.year) );
-            .range([0, vis.width]);
+        // vis.xScale = d3.scaleLinear()
+        //   .domain(d3.extent(vis.data, vis.xValue)) //d3.min(vis.data, d => d.year), d3.max(vis.data, d => d.year) );
+        //.range([0, vis.width]);
+        let years = []
+        vis.data.forEach(d => years.push(d.year));
+        vis.xScale.domain(years);
 
-        vis.yScale = d3.scaleLinear()
-            //.domain([-10, d3.max(vis.data, d => d.value)])
-            .domain(d3.extent(vis.data, vis.yValue))
-            .range([vis.height, 0])
-            .nice();
+        let values = []
+        vis.data.forEach(d => {
+            values.push(d.co + d.no2 + d.ozone + d.pm2 + d.pm10 + d.so2 + 50);
+
+        })
+
+        // vis.yScale = d3.scaleLinear()
+        //     //.domain([-10, d3.max(vis.data, d => d.value)])
+        //     .domain(d3.extent(vis.data, vis.yValue))
+        //     .range([vis.height, 0])
+        //     .nice();
+        vis.yScale.domain([0, d3.max(values)])
+       // vis.yScale.domain([0, 600])
+
         console.log('made scales');
 
         vis.stackedData = vis.stack(vis.data);
@@ -88,23 +100,45 @@ class StackChart {
     renderVis() {
         let vis = this;
 
+        let color = '';
         vis.chart
             .selectAll("category")
             .data(vis.stackedData)
             .join("g")
-            .attr("class", (d) => `category cat-${d.key}`)
+            .style("fill", d=>vis.colorPalette(d.key))
+            .attr("class", function(d) {
+                color = d.key;
+                //console.log(d.key);
+                `category cat-${d.key}`;})
+            
             .selectAll("rect")
             .data((d) => d)
             .join("rect")
-            .attr("x", (d) => 
-            {
-              //  console.log(d);
-                vis.xScale(d.data.year)})
-            .attr("y", (d) => {
+                // .attr('fill', function(d) {
+                //     // let count = 1;
+                //     // let up = 0
+                //     // while(up<6){
+                //     //     while(count%42!=0){
+                //     //         count++
+                //              console.log(vis.stackedData.keys);
+                //             vis.colorPalette(vis.stackedData.keys[]);
+                //     //     }
+                //     //     up++;
+
+                //     // }
+                //     //console.log(color) 
+                //     })
+                .attr("x", (d) =>
+                vis.xScale(d.data.year))
+
+                .attr("y", (d) =>
                 //console.log(d)
-                vis.yScale(d[1])})
-            .attr("height", (d) => vis.yScale(d[0]) - vis.yScale(d[1]));
-            //.attr("width", vis.xScale.bandwidth());
+                    vis.yScale(d[1]))
+                .attr("height", (d) =>
+                // console.log(vis.yScale(d[0]) - vis.yScale(d[1]));
+                // console.log(vis.yScale(d[0]));
+                vis.yScale(d[0]) - vis.yScale(d[1]))
+            .attr("width", vis.xScale.bandwidth());
 
         vis.xAxisG.call(vis.xAxis);
         vis.yAxisG.call(vis.yAxis);
