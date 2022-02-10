@@ -112,8 +112,27 @@ d3.csv('data/HamiltonCountyData.csv')
 
       'parentElement': '#pieChart',
       'containerHeight': 500,
-      'containerWidth': 1000
+      'containerWidth': 00
     }, hazards);
+
+    let pol = [];
+    data.forEach(d => {
+      if (d.Year == 2021) {
+
+        pol.push({'key': 'co', 'value':d.DaysCO})
+        pol.push({'key': 'no2', 'value':d.DaysNO2})
+        pol.push({'key': 'ozone', 'value':d.DaysOzone})
+      pol.push({'key': 'so2', 'value':d.DaysSO2})
+      pol.push({'key': 'pm2', 'value':d.DaysPM2})
+      pol.push({'key': 'pm10', 'value':d.DaysPM10})
+    }})
+
+    let pols = new PieChart({
+
+      'parentElement': '#pieChart1',
+      'containerHeight': 500,
+      'containerWidth': 00
+    }, pol);
   })
 
 
