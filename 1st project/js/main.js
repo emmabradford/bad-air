@@ -32,6 +32,7 @@ d3.csv('data/HamiltonCountyData.csv')
     let medianPerYear = []; //this will be our data for the line chart
     let medianPerYear2 = [];
 
+    let choice = 'Hamilton';
     data.forEach(function (d) {
       //medianPerYear2.push( {"year": d.Year, "medianAQI":d.MedianAQI, "percentile90th": d.Percentile90thAQI, "maxAQI": d.MaxAQI});
       // medianPerYear2.push( {"year": d.Year, values: {
@@ -40,11 +41,11 @@ d3.csv('data/HamiltonCountyData.csv')
       //       median: d.MedianAQI,
       //       percent: d.Percentile90thAQI
       // }});
-
+      if (d.County == choice){
       medianPerYear.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
       medianPerYear.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
       medianPerYear.push({ "year": d.Year, "value": d.Percentile90thAQI, "type": "percent" });
-
+    }
     })
     console.log('median year', medianPerYear);
     //}
@@ -58,9 +59,10 @@ d3.csv('data/HamiltonCountyData.csv')
 
     let polutants = [];
 
-    data.forEach(d =>
+    data.forEach(d => {
+      if (d.County == choice){
       polutants.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
-
+    }}
     )
 
     let stacks = new StackChart({
@@ -75,13 +77,14 @@ d3.csv('data/HamiltonCountyData.csv')
     console.log('num days')
     let numdays = [];
     data.forEach(d => {
+      if (d.County == choice){
       if (d.Year % 4 == 0 || d.Year % 100 == 0) {
         numdays.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
       }
       else {
         numdays.push({ "year": d.Year, "value": 365 - d.DayswithAQI, "type": "daysaqi" })
       }
-    }
+      }}
     )
 
     let days = new LineChart({
@@ -93,6 +96,7 @@ d3.csv('data/HamiltonCountyData.csv')
 
     let hazards = [];
     data.forEach(d => {
+      if (d.County == choice){
       if (d.Year == 2021) {
       hazards.push({'key': 'good', 'value':d.GoodDays})
       hazards.push({'key': 'hazard', 'value':d.HazardousDays})
@@ -100,7 +104,7 @@ d3.csv('data/HamiltonCountyData.csv')
       hazards.push({'key': 'moderete', 'value':d.ModerateDays})
       hazards.push({'key': 'unhealthyfor', 'value':d.UnhealthyforSensitiveGroupsDays})
       hazards.push({'key': 'very', 'value':d.VeryUnhealthyDays})
-    }})
+    }}})
     // data.forEach(d => {
     //   if (d.Year == 2021) {
     //     let sum = d.GoodDays + d.HazardousDays + d.VeryUnhealthyDays + d.UnhealthyforSensitiveGroupsDays + d.UnhealthyDays + d.ModerateDays;
@@ -117,6 +121,7 @@ d3.csv('data/HamiltonCountyData.csv')
 
     let pol = [];
     data.forEach(d => {
+      if (d.County == choice){
       if (d.Year == 2021) {
 
         pol.push({'key': 'co', 'value':d.DaysCO})
@@ -125,7 +130,8 @@ d3.csv('data/HamiltonCountyData.csv')
       pol.push({'key': 'so2', 'value':d.DaysSO2})
       pol.push({'key': 'pm2', 'value':d.DaysPM2})
       pol.push({'key': 'pm10', 'value':d.DaysPM10})
-    }})
+    }}
+  })
 
     let pols = new PieChart({
 
