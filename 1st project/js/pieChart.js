@@ -29,11 +29,15 @@ class PieChart {
             .attr('height', vis.config.containerHeight);
 
         vis.chart = vis.svg.append('g')
-            .attr('transform', `translate(${vis.width/2},${vis.height/2})`);
+            .attr('transform', `translate(${vis.width / 2},${vis.height / 2})`);
 
         vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
         vis.colorPalette.domain('good', 'hazard', 'unhealthy', 'moderete', 'unhealthyfor', 'very');
+        this.updateVis()
+    }
 
+    updateVis() {
+        let vis = this;
         console.log('data')
         vis.pie = d3.pie()
             .value(function (d) {
@@ -47,13 +51,13 @@ class PieChart {
         vis.chart.selectAll('whatever')
             .data(vis.data_ready)
             .enter()
-           .append('path')
-           //.join('path')
+            .append('path')
+            //.join('path')
             .attr('d', d3.arc()
                 .innerRadius(0)
                 .outerRadius(vis.radius)
             )
-            .attr('fill',(d)=>
+            .attr('fill', (d) =>
                 vis.colorPalette(d.data.key)
             )
             .attr("stroke", "black")
