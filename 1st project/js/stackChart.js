@@ -9,7 +9,7 @@ class StackChart {
 
         this.data = _data;
         // this.data2= _data2
-        console.log(this.data);
+       // console.log(this.data);
         //console.log(this.data2);
         // Call a class function
         this.initVis();
@@ -81,18 +81,12 @@ class StackChart {
 
         })
 
-        // vis.yScale = d3.scaleLinear()
-        //     //.domain([-10, d3.max(vis.data, d => d.value)])
-        //     .domain(d3.extent(vis.data, vis.yValue))
-        //     .range([vis.height, 0])
-        //     .nice();
         vis.yScale.domain([0, d3.max(values)])
-        // vis.yScale.domain([0, 600])
 
-        console.log('made scales');
+        //console.log('made scales');
 
         vis.stackedData = vis.stack(vis.data);
-        console.log(vis.stackedData)
+        //console.log(vis.stackedData)
 
         vis.renderVis();
     }
@@ -111,7 +105,6 @@ class StackChart {
                 //console.log(d.key);
                 `category cat-${d.key}`;
             })
-
             .selectAll("rect")
             .data((d) => d)
             .join("rect")
@@ -130,8 +123,5 @@ class StackChart {
 
         vis.xAxisG.call(vis.xAxis);
         vis.yAxisG.call(vis.yAxis);
-        // vis.xAxis = d3.axisBottom(vis.xScale);
-        // vis.yAxis = d3.axisLeft(vis.yScale);
-
     }
 }

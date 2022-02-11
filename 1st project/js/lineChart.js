@@ -9,17 +9,17 @@ class LineChart {
 
         this.data = _data;
         // this.data2= _data2
-        console.log(this.data);
+        //console.log(this.data);
         //console.log(this.data2);
         // Call a class function
         this.initVis();
     }
     
     initVis() {
-        console.log("inside line");
+       // console.log("inside line");
 
         let vis = this;
-        console.log(vis.data);
+       // console.log(vis.data);
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
@@ -39,7 +39,7 @@ class LineChart {
             // .domain(d3.extent(vis.data, vis.yValue))
             .range([vis.height, 0])
             .nice();
-        console.log('made scales');
+        //console.log('made scales');
 
         vis.svg = d3.select(vis.config.parentElement)
             .attr('width', vis.config.containerWidth)
@@ -51,7 +51,7 @@ class LineChart {
         vis.xAxis = d3.axisBottom(vis.xScale);
         vis.yAxis = d3.axisLeft(vis.yScale);
 
-        console.log('made axis');
+       // console.log('made axis');
         vis.xAxisG = vis.chart.append('g')
             .attr('class', 'axis x-axis')
             .attr('transform', `translate(0,${vis.height})`)
@@ -61,11 +61,11 @@ class LineChart {
 
     updateVis() {
         let vis = this;
-        console.log(vis.data);
-        console.log("inside line");
+       // console.log(vis.data);
+        //console.log("inside line");
 
         //let vis = this;
-        console.log(vis.data);
+        //console.log(vis.data);
         // vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         // vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
@@ -109,7 +109,7 @@ class LineChart {
             .attr('class', 'axis y-axis')
             .call(vis.yAxis);
 
-        console.log('made axis group');
+       // console.log('made axis group');
         vis.area = d3.area()
             .x(d => vis.xScale(vis.xValue(d)))
             .y1(d => vis.yScale(vis.yValue(d)))
@@ -117,33 +117,10 @@ class LineChart {
 
         vis.chart.append('path')
             .data([vis.data]);
-        //.attr('fill', 'none')
-        //.attr('d', vis.area);
 
-        console.log('made path');
+        //console.log('made path');
 
         vis.yValueM = d => vis.data.filter(d => d.type == "median");
-        console.log()
-        // function(d){
-        //         let x = []
-        //         if(d.type=="median"){
-        //             if(d.value > 0) {
-        //                 x.push(d.value);
-        //             }
-
-        //         }
-        //         return x;
-        //     };
-
-        // console.log("median data")
-        // console.log(vis.yValueM);
-
-        // vis.line1 = d3.line()
-        //     .x(d => vis.xScale(vis.xValue(d)))
-        //     .y(d => vis.yScale(vis.yValueM(d)));
-        // console.log('made line');
-
-
 
         vis.circles = vis.chart.selectAll('circle')
             .data(vis.data)
@@ -157,25 +134,7 @@ class LineChart {
             .attr('cy', (d) => vis.yScale(d.value))
             .attr('cx', (d) => vis.xScale(d.year));;
 
-        console.log("made circules");
-
-        // vis.lines = vis.chart.selectAll('lines')
-        //     .data([vis.data])
-        //     .enter()
-        //     .append('g')
-
-        // vis.chart.append('path')
-        //     .attr('stroke', (d) => vis.colorPalette(d.type))
-        //     .attr('stroke-width', 2)
-        //     .attr('d', d=>vis.line(d.values) )
-        //     .attr("fill", "none");
-
-        // vis.chart.append('path')
-        // .data([vis.data]) 
-        // .attr('stroke', (d) => vis.colorPalette(d.type))
-        // .attr('fill', 'none')
-        // .attr('stroke-width', 2)
-        // .attr('d', vis.line1);
+       // console.log("made circules");
 
         vis.chart.selectAll(".line")
             .data(vis.groups)
@@ -191,7 +150,7 @@ class LineChart {
             });
 
 
-        console.log('made chart');
+        //console.log('made chart');
     }
     
 }

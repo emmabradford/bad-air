@@ -9,7 +9,7 @@ class PieChart {
 
         this.data = _data;
         // this.data2= _data2
-        console.log(this.data);
+        //console.log(this.data);
         //console.log(this.data2);
         // Call a class function
         this.initVis();
@@ -46,7 +46,7 @@ class PieChart {
             })
         //vis.data_ready = vis.pie(Object.entries(vis.data));
         vis.data_ready = vis.pie(vis.data);
-        console.log('data ready');
+        //console.log('data ready');
 
         vis.chart.selectAll('whatever')
             .data(vis.data_ready)
