@@ -38,10 +38,10 @@ class PieChart {
 
     updateVis() {
         let vis = this;
-        console.log('data')
+       // console.log('data')
         vis.pie = d3.pie()
             .value(function (d) {
-                console.log(d);
+               // console.log(d);
                 return d.value
             })
         //vis.data_ready = vis.pie(Object.entries(vis.data));

@@ -31,6 +31,23 @@ d3.csv('data/HamiltonCountyData.csv')
     }
 
     )
+
+    // let ids = [];
+    // data.forEach(d=>ids.push(`<option value="${d.State},${d.County}">${d.State},${d.County}</option>`));
+    // function onlyUnique(value, index, self) {
+    //   return self.indexOf(value) === index;
+    // }
+    // let countyIDs = ids.filter(onlyUnique);
+    // console.log(countyIDs + 'h');
+  //   var fs = require("fs");
+  //   fs.writeFile('input.txt', countyIDs, function(err) {
+  //     if (err) {
+  //        return console.error(err);
+  //     }
+  //     console.log("Data written successfully!");
+  //     console.log("Let's read newly written data");
+  //     // Read the newly written file and print all of its content on the console
+  //  });
     let minYear = d3.min(data, d => d.Year);
     let maxYear = d3.max(data, d => d.Year);
    // console.log(maxYear);
@@ -39,7 +56,7 @@ d3.csv('data/HamiltonCountyData.csv')
 
     let choice = 'Hamilton';
 
-    data.forEach(function (d) {
+    data.filter(d=>d.State==s1).forEach(function (d) {
       if (d.County == choice) {
         medianPerYear.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
         medianPerYear.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
@@ -57,7 +74,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, medianPerYear);
 
     let medianPerYear2 = [];
-    data.forEach(function (d) {
+    data.filter(d=>d.State==s2).forEach(function (d) {
       if (d.County == choice) {
         medianPerYear2.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
         medianPerYear2.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
@@ -74,7 +91,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, medianPerYear2);
 
     let polutants = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s1).forEach(d => {
       if (d.County == choice) {
         polutants.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
       }
@@ -90,7 +107,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, polutants);
 
     let polutants2 = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s2).forEach(d => {
       if (d.County == choice) {
         polutants2.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
       }
@@ -108,7 +125,7 @@ d3.csv('data/HamiltonCountyData.csv')
 
     //console.log('num days')
     let numdays = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s1).forEach(d => {
       if (d.County == choice) {
         if (d.Year % 4 == 0 || d.Year % 100 == 0) {
           numdays.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
@@ -128,7 +145,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, numdays);
 
     let numdays2 = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s2).forEach(d => {
       if (d.County == choice) {
         if (d.Year % 4 == 0 || d.Year % 100 == 0) {
           numdays2.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
@@ -148,7 +165,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, numdays2);
 
     let hazards = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s1).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
           hazards.push({ 'key': 'good', 'value': d.GoodDays })
@@ -169,7 +186,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, hazards);
 
     let hazards2 = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s2).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
           hazards2.push({ 'key': 'good', 'value': d.GoodDays })
@@ -190,7 +207,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, hazards2);
 
     let pol = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s1).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
 
@@ -212,7 +229,7 @@ d3.csv('data/HamiltonCountyData.csv')
     }, pol);
 
     let pol2 = [];
-    data.forEach(d => {
+    data.filter(d=>d.State==s2).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
 
@@ -385,6 +402,8 @@ d3.select('#county2').on('change', function () {
     }
   })
   pols2.data = pol12;
+  console.log('checking');
+  console.log(pols2.data);
   pols2.updateVis();
 
 });
