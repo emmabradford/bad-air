@@ -4,6 +4,8 @@ let c2 = 'Hamilton';
 let s1 = 'Ohio';
 let s2 = 'Ohio';
 let y = 2021;
+let cb = 'MaxAQI';
+let data1;
 d3.csv('data/HamiltonCountyData.csv')
   .then(data => {
     //console.log('Data loading complete. Work with dataset.');
@@ -39,24 +41,15 @@ d3.csv('data/HamiltonCountyData.csv')
     // }
     // let countyIDs = ids.filter(onlyUnique);
     // console.log(countyIDs + 'h');
-  //   var fs = require("fs");
-  //   fs.writeFile('input.txt', countyIDs, function(err) {
-  //     if (err) {
-  //        return console.error(err);
-  //     }
-  //     console.log("Data written successfully!");
-  //     console.log("Let's read newly written data");
-  //     // Read the newly written file and print all of its content on the console
-  //  });
     let minYear = d3.min(data, d => d.Year);
     let maxYear = d3.max(data, d => d.Year);
-   // console.log(maxYear);
+    // console.log(maxYear);
 
     let medianPerYear = []; //this will be our data for the line chart
 
     let choice = 'Hamilton';
 
-    data.filter(d=>d.State==s1).forEach(function (d) {
+    data.filter(d => d.State == s1).forEach(function (d) {
       if (d.County == choice) {
         medianPerYear.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
         medianPerYear.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
@@ -69,12 +62,13 @@ d3.csv('data/HamiltonCountyData.csv')
 
       'parentElement': '#lineChart',
 
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, medianPerYear);
+    lines.tp = '#tooltip';
 
     let medianPerYear2 = [];
-    data.filter(d=>d.State==s2).forEach(function (d) {
+    data.filter(d => d.State == s2).forEach(function (d) {
       if (d.County == choice) {
         medianPerYear2.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
         medianPerYear2.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
@@ -86,12 +80,13 @@ d3.csv('data/HamiltonCountyData.csv')
 
       'parentElement': '#lineChart2',
 
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, medianPerYear2);
+    lines2.tp = '#tooltip1';
 
     let polutants = [];
-    data.filter(d=>d.State==s1).forEach(d => {
+    data.filter(d => d.State == s1).forEach(d => {
       if (d.County == choice) {
         polutants.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
       }
@@ -102,12 +97,13 @@ d3.csv('data/HamiltonCountyData.csv')
 
       'parentElement': '#stackChart',
 
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, polutants);
+    stacks.tp = '#tooltip2';
 
     let polutants2 = [];
-    data.filter(d=>d.State==s2).forEach(d => {
+    data.filter(d => d.State == s2).forEach(d => {
       if (d.County == choice) {
         polutants2.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
       }
@@ -118,14 +114,15 @@ d3.csv('data/HamiltonCountyData.csv')
 
       'parentElement': '#stackChart2',
 
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, polutants2);
+    stacks2.tp = '#tooltip3';
 
 
     //console.log('num days')
     let numdays = [];
-    data.filter(d=>d.State==s1).forEach(d => {
+    data.filter(d => d.State == s1).forEach(d => {
       if (d.County == choice) {
         if (d.Year % 4 == 0 || d.Year % 100 == 0) {
           numdays.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
@@ -138,14 +135,14 @@ d3.csv('data/HamiltonCountyData.csv')
     )
 
     days = new LineChart({
-
       'parentElement': '#lineChart1',
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, numdays);
+    days.tp = '#tooltip4';
 
     let numdays2 = [];
-    data.filter(d=>d.State==s2).forEach(d => {
+    data.filter(d => d.State == s2).forEach(d => {
       if (d.County == choice) {
         if (d.Year % 4 == 0 || d.Year % 100 == 0) {
           numdays2.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
@@ -160,12 +157,13 @@ d3.csv('data/HamiltonCountyData.csv')
     days2 = new LineChart({
 
       'parentElement': '#lineChart12',
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, numdays2);
+    days2.tp = '#tooltip5';
 
     let hazards = [];
-    data.filter(d=>d.State==s1).forEach(d => {
+    data.filter(d => d.State == s1).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
           hazards.push({ 'key': 'good', 'value': d.GoodDays })
@@ -181,12 +179,13 @@ d3.csv('data/HamiltonCountyData.csv')
     haz = new PieChart({
 
       'parentElement': '#pieChart',
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, hazards);
+    haz.tp = '#tooltip6';
 
     let hazards2 = [];
-    data.filter(d=>d.State==s2).forEach(d => {
+    data.filter(d => d.State == s2).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
           hazards2.push({ 'key': 'good', 'value': d.GoodDays })
@@ -202,12 +201,13 @@ d3.csv('data/HamiltonCountyData.csv')
     haz2 = new PieChart({
 
       'parentElement': '#pieChart2',
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, hazards2);
+    haz2.tp = '#tooltip7';
 
     let pol = [];
-    data.filter(d=>d.State==s1).forEach(d => {
+    data.filter(d => d.State == s1).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
 
@@ -224,12 +224,13 @@ d3.csv('data/HamiltonCountyData.csv')
     pols = new PieChart({
 
       'parentElement': '#pieChart1',
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, pol);
+    pols.tp = '#tooltip8';
 
     let pol2 = [];
-    data.filter(d=>d.State==s2).forEach(d => {
+    data.filter(d => d.State == s2).forEach(d => {
       if (d.County == choice) {
         if (d.Year == 2021) {
 
@@ -246,15 +247,95 @@ d3.csv('data/HamiltonCountyData.csv')
     pols2 = new PieChart({
 
       'parentElement': '#pieChart12',
-      'containerHeight': 400,
-      'containerWidth': 650
+      'containerHeight': 350,
+      'containerWidth': 600
     }, pol2);
+    pols2.tp = '#tooltip9';
+
+    Promise.all([
+      d3.json('data/counties-10m.json'),
+      d3.csv('data/fips.csv')
+    ]).then(dataMap => {
+      const geoData = dataMap[0];
+      const countyFips = dataMap[1];
+    
+      console.log(geoData);
+      
+      geoData.objects.counties.geometries.forEach(d => {
+
+      //geoData.objects.collection.geometries.forEach(d => {
+        for (let i = 0; i < countyFips.length; i++) {
+    
+          if (d.id == countyFips[i].cnty_fips) {
+           // console.log(d);
+            //console.log(countyFips[i]);
+            let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
+          //  console.log(countyInfo);
+            if (countyInfo.length!=0) {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': countyInfo[0].MaxAQI };
+              d.properties.value = +d.properties.value;
+            }
+            else{
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': 0};
+              d.properties.value = +d.properties.value;
+            }
+           // console.log(d.properties);
+          }
+        }
+      });
+      const choroplethMap = new ChoroplethMap({
+        parentElement: '.viz'
+        //'containerHeight': 1000,
+        //  'containerWidth': 1100
+      }, dataMap[0]);
+      choroplethMap.tp='#tooltip10';
+    })
+    
+      .catch(error => console.error(error));
   })
 
   .catch(error => {
     //console.log(error);
     console.error('Error loading the data');
   });
+
+// Promise.all([
+//   d3.json('data/counties-10m.json'),
+//   d3.csv('data/fips.csv')
+// ]).then(data => {
+//   const geoData = data[0];
+//   const countyFips = data[1];
+
+//   console.log(geoData);
+
+//   geoData.objects.counties.geometries.forEach(d => {
+//     for (let i = 0; i < countyFips.length; i++) {
+
+//       if (d.id == countyFips[i].cnty_fips) {
+//         console.log(d);
+//         console.log(countyFips[i]);
+//         let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
+//         console.log(countyInfo);
+//         if (countyInfo.length!=0) {
+//           d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': countyInfo[0].MaxAQI };
+//         }
+//         else{
+//           d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': 0};
+//         }
+//         console.log(d.properties);
+//       }
+//     }
+//   });
+//   const choroplethMap = new ChoroplethMap({
+//     'parentElement': '#cloreplath',
+//     'containerHeight': 1000,
+//       'containerWidth': 1100
+//   }, data[0]);
+//   choroplethMap.tp='#tooltip10';
+// })
+
+//   .catch(error => console.error(error));
+
 
 d3.select('#county1').on('change', function () {
   let choice1 = d3.select(this).property('value');
@@ -266,7 +347,7 @@ d3.select('#county1').on('change', function () {
   console.log(c1);
 
   let medianPerYear1 = [];
-  data1.filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(function (d) {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(function (d) {
     medianPerYear1.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
     medianPerYear1.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
     medianPerYear1.push({ "year": d.Year, "value": d.Percentile90thAQI, "type": "percent" });
@@ -275,7 +356,7 @@ d3.select('#county1').on('change', function () {
   lines.updateVis();
 
   let polutants1 = [];
-  data1.filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(function (d) {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(function (d) {
     //if (d.County == choice){
     polutants1.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
   }
@@ -284,7 +365,7 @@ d3.select('#county1').on('change', function () {
   stacks.updateVis();
 
   let numdays1 = [];
-  data1.filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(function (d) {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year % 4 == 0 || d.Year % 100 == 0) {
       numdays1.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
@@ -298,7 +379,7 @@ d3.select('#county1').on('change', function () {
   days.updateVis();
 
   let hazards1 = [];
-  data1.filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(function (d) {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year == y) {
       hazards1.push({ 'key': 'good', 'value': d.GoodDays })
@@ -314,7 +395,7 @@ d3.select('#county1').on('change', function () {
   haz.updateVis();
 
   let pol1 = [];
-  data1.filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(function (d) {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year == y) {
 
@@ -341,7 +422,7 @@ d3.select('#county2').on('change', function () {
   console.log(c2);
 
   let medianPerYear12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     medianPerYear12.push({ "year": d.Year, "value": d.MedianAQI, "type": "median" });
     medianPerYear12.push({ "year": d.Year, "value": d.MaxAQI, "type": "max" });
     medianPerYear12.push({ "year": d.Year, "value": d.Percentile90thAQI, "type": "percent" });
@@ -350,7 +431,7 @@ d3.select('#county2').on('change', function () {
   lines2.updateVis();
 
   let polutants12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     //if (d.County == choice){
     polutants12.push({ "year": d.Year, "co": d.DaysCO, "no2": d.DaysNO2, "ozone": d.DaysOzone, "so2": d.DaysSO2, "pm2": d.DaysPM2, "pm10": d.DaysPM10 })
   }
@@ -359,7 +440,7 @@ d3.select('#county2').on('change', function () {
   stacks2.updateVis();
 
   let numdays12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year % 4 == 0 || d.Year % 100 == 0) {
       numdays12.push({ "year": d.Year, "value": 366 - d.DayswithAQI, "type": "daysaqi" })
@@ -373,7 +454,7 @@ d3.select('#county2').on('change', function () {
   days2.updateVis();
 
   let hazards12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year == y) {
       hazards12.push({ 'key': 'good', 'value': d.GoodDays })
@@ -389,7 +470,7 @@ d3.select('#county2').on('change', function () {
   haz2.updateVis();
 
   let pol12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year == y) {
 
@@ -414,8 +495,8 @@ d3.select('#year').on('change', function () {
   console.log(y);
 
   let hazards1 = [];
-  data1filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(d => {
-  //  data1.forEach(d => {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(d => {
+    //  data1.forEach(d => {
     // if (d.County == choice){
     if (d.Year == y) {
       console.log(d);
@@ -432,7 +513,7 @@ d3.select('#year').on('change', function () {
   haz.updateVis();
 
   let pol1 = [];
-  data1filter(d=> d.State ==s1).filter(d => d.County == c1).forEach(d => {
+  data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(d => {
     // if (d.County == choice){
     if (d.Year == y) {
 
@@ -448,7 +529,7 @@ d3.select('#year').on('change', function () {
   pols.updateVis();
 
   let hazards12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year == y) {
       hazards12.push({ 'key': 'good', 'value': d.GoodDays })
@@ -464,7 +545,7 @@ d3.select('#year').on('change', function () {
   haz2.updateVis();
 
   let pol12 = [];
-  data1.filter(d=> d.State ==s2).filter(d => d.County == c2).forEach(function (d) {
+  data1.filter(d => d.State == s2).filter(d => d.County == c2).forEach(function (d) {
     // if (d.County == choice){
     if (d.Year == y) {
 
@@ -481,3 +562,4 @@ d3.select('#year').on('change', function () {
 
 
 });
+

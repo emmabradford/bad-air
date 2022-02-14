@@ -13,11 +13,12 @@ class StackChart {
         //console.log(this.data2);
         // Call a class function
         this.initVis();
+        
     }
 
     initVis() {
         let vis = this;
-
+        vis.tb;
         vis.width =
             vis.config.containerWidth -
             vis.config.margin.left -
@@ -36,7 +37,7 @@ class StackChart {
             .paddingInner(0.2)
             .paddingOuter(0.2);
 
-        vis.yScale = d3.scaleLinear().range([vis.height, 0]);
+        vis.yScale = d3.scaleLinear().range([vis.height, 0]).nice();
 
         vis.xAxis = d3.axisBottom(vis.xScale);
         vis.yAxis = d3.axisLeft(vis.yScale).ticks(10);
@@ -68,6 +69,9 @@ class StackChart {
     updateVis() {
         let vis = this;
 
+        vis.chart.selectAll('rect')
+            .data([])
+            .exit().remove();
         // vis.xScale = d3.scaleLinear()
         //   .domain(d3.extent(vis.data, vis.xValue)) //d3.min(vis.data, d => d.year), d3.max(vis.data, d => d.year) );
         //.range([0, vis.width]);
@@ -77,7 +81,7 @@ class StackChart {
 
         let values = []
         vis.data.forEach(d => {
-            values.push(d.co + d.no2 + d.ozone + d.pm2 + d.pm10 + d.so2 + 50);
+            values.push(d.co + d.no2 + d.ozone + d.pm2 + d.pm10 + d.so2);
 
         })
 
@@ -119,7 +123,31 @@ class StackChart {
                 // console.log(vis.yScale(d[0]) - vis.yScale(d[1]));
                 // console.log(vis.yScale(d[0]));
                 vis.yScale(d[0]) - vis.yScale(d[1]))
-            .attr("width", vis.xScale.bandwidth());
+            .attr("width", vis.xScale.bandwidth())
+            .on('mouseover', (event,d) => {
+                console.log("mouse over! ");
+                console.log(event);
+                console.log(d);
+  
+              d3.select(vis.tp)
+                .style('display', 'block')
+                .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
+                .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+                .html(`
+                  <div class="tooltip-title">${d.data.year}</div>
+                  <ul>
+                    <li> CO: ${d.data.co}</li>
+                    <li> NO2: ${d.data.no2}</li>
+                    <li> Ozone: ${d.data.ozone}</li>
+                    <li> PM-2: ${d.data.pm2}</li>
+                    <li> PM-10: ${d.data.pm10}</li>
+                    <li> SO2: ${d.data.so2}</li>
+                  </ul>
+                `);
+            })
+            .on('mouseleave', () => {
+              d3.select(vis.tp).style('display', 'none');
+            });
 
         vis.xAxisG.call(vis.xAxis);
         vis.yAxisG.call(vis.yAxis);
