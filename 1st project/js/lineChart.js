@@ -10,7 +10,10 @@ class LineChart {
         console.log(this.data);
         //console.log(this.data2);
         // Call a class function
+        this.ylabel;
+        this.title;
         this.initVis();
+
     }
 
     initVis() {
@@ -46,7 +49,7 @@ class LineChart {
 
         vis.chart = vis.svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-            vis.yAxisG = vis.chart.append('g')
+        vis.yAxisG = vis.chart.append('g')
             .attr('class', 'axis y-axis')
             .call(vis.yAxis);
 
@@ -60,6 +63,21 @@ class LineChart {
 
     updateVis() {
         let vis = this;
+
+        vis.svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("x", vis.width)
+            .attr("y", vis.height - 6)
+            .text('years');
+
+        
+        // vis.svg.append("text")
+        //     .attr("x", vis.width / 2)
+        //     .attr("y", 15)
+        //     .attr("text-anchor", "middle")
+        //     .style("font-size", "16px")
+        //     .text(vis.title);
 
         //might not need
         vis.chart.selectAll('path')
@@ -118,27 +136,27 @@ class LineChart {
             });
 
         vis.circles
-            .on('mouseover', (event,d) => {
-              console.log("mouse over! ");
-              console.log(event);
-              console.log(d);
+            .on('mouseover', (event, d) => {
+                console.log("mouse over! ");
+                console.log(event);
+                console.log(d);
 
-            d3.select(vis.tp)
-              .style('display', 'block')
-              .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
-              .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
-              .html(`
+                d3.select(vis.tp)
+                    .style('display', 'block')
+                    .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')
+                    .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+                    .html(`
                 <div class="tooltip-title">${d.year}</div>
                 <ul>
                   <li> y value: ${d.value}</li>
                   <li>days type of data: ${d.type}</li>
                 </ul>
               `);
-          })
-          .on('mouseleave', () => {
-            d3.select(vis.tp).style('display', 'none');
-          });
-          vis.xAxisG.call(vis.xAxis);
+            })
+            .on('mouseleave', () => {
+                d3.select(vis.tp).style('display', 'none');
+            });
+        vis.xAxisG.call(vis.xAxis);
         vis.yAxisG.call(vis.yAxis);
         //console.log('made chart');
     }

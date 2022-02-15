@@ -61,6 +61,18 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, medianPerYear);
     lines.tp = '#tooltip';
+    lines.svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -(lines.height / 2))
+      .attr("y", 15)
+      .style("text-anchor", "middle")
+      .text('AQI');
+    lines.svg.append("text")
+    .attr("x", lines.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 1 AQI');
 
     let medianPerYear2 = [];
     data.filter(d => d.State == s2).forEach(function (d) {
@@ -78,6 +90,18 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, medianPerYear2);
     lines2.tp = '#tooltip1';
+    lines2.svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -(lines2.height / 2))
+      .attr("y", 15)
+      .style("text-anchor", "middle")
+      .text('AQI');
+    lines2.svg.append("text")
+    .attr("x", lines2.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 2 AQI');
 
     let polutants = [];
     data.filter(d => d.State == s1).forEach(d => {
@@ -92,6 +116,12 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, polutants);
     stacks.tp = '#tooltip2';
+    stacks.svg.append("text")
+    .attr("x", stacks.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 1 Polutants AQI');
 
     let polutants2 = [];
     data.filter(d => d.State == s2).forEach(d => {
@@ -106,6 +136,12 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, polutants2);
     stacks2.tp = '#tooltip3';
+    stacks2.svg.append("text")
+    .attr("x", stacks2.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 2 Polutants AQI');
 
     //console.log('num days')
     let numdays = [];
@@ -125,6 +161,18 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, numdays);
     days.tp = '#tooltip4';
+    days.svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -(days.height / 2))
+      .attr("y", 15)
+      .style("text-anchor", "middle")
+      .text('Number of Days');
+      days.svg.append("text")
+    .attr("x", days.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 1 Days with No Readings');
 
     let numdays2 = [];
     data.filter(d => d.State == s2).forEach(d => {
@@ -143,6 +191,18 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, numdays2);
     days2.tp = '#tooltip5';
+    days2.svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -(days2.height / 2))
+      .attr("y", 15)
+      .style("text-anchor", "middle")
+      .text('Number of Days');
+      days2.svg.append("text")
+    .attr("x", days2.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 2 Days with No Readings');
 
     let hazards = [];
     data.filter(d => d.State == s1).forEach(d => {
@@ -164,6 +224,12 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, hazards);
     haz.tp = '#tooltip6';
+    haz.svg.append("text")
+    .attr("x", haz.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 1 Hazardus Days Pie Chart');
 
     let hazards2 = [];
     data.filter(d => d.State == s2).forEach(d => {
@@ -185,6 +251,12 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, hazards2);
     haz2.tp = '#tooltip7';
+    haz2.svg.append("text")
+    .attr("x", haz2.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 2 Hazardus Days Pie Chart');
 
     let pol = [];
     data.filter(d => d.State == s1).forEach(d => {
@@ -206,6 +278,12 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, pol);
     pols.tp = '#tooltip8';
+    pols.svg.append("text")
+    .attr("x", pols.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 1 Polutants AQI Pie Chart');
 
     let pol2 = [];
     data.filter(d => d.State == s2).forEach(d => {
@@ -227,6 +305,12 @@ d3.csv('data/HamiltonCountyData.csv')
       'containerWidth': 600
     }, pol2);
     pols2.tp = '#tooltip9';
+    pols2.svg.append("text")
+    .attr("x", pols2.width / 2)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text('County 2 Polutants AQI Pie Chart');
 
     Promise.all([
       d3.json('data/counties-10m.json'),

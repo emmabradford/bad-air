@@ -58,16 +58,63 @@ class StackChart {
 
         vis.stack = d3.stack().keys(["co", "no2", "ozone", "pm2", "pm10", "so2"]);
 
+        vis.xlabel = 'AQI';
+        vis.ylabel = 'years';
+
+        // vis.svg.append("text")
+        //     .attr("class", "x label")
+        //     .attr("x", -(vis.height / 2))
+        //     .attr("y", 15)
+        //     .style("text-anchor", "middle")
+        //     .text("Population");
+
+        // vis.svg.append("text")
+        //     .attr("class", "y label")
+        //     .attr("text-anchor", "end")
+        //     .attr("x", vis.width)
+        //     .attr("y", vis.height - 6)
+        //     .text(vis.ylabel);
+
         vis.updateVis();
     }
 
     updateVis() {
         let vis = this;
 
+        // vis.svg.append("text")
+        // //.attr("transform", "translate(" + (vis.width/2) + " ," + (vis.height-10) + ")")
+        // .style("text-anchor", "end")
+        // .attr("x", (vis.width))
+        // .attr("y", vis.height-6)
+        // .text("Year");
+
+        vis.svg.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("x", vis.width)
+            .attr("y", vis.height - 6)
+            .text(vis.ylabel);
+
+        vis.svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -(vis.height/2))
+        .attr("y", 15)
+        .style("text-anchor", "middle")
+        .text("AQI");
+        
+        vis.title = ''
+        vis.svg.append("text")
+            .attr("x", vis.width / 2)
+            .attr("y", 15)
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .text(vis.title);
+
+
         vis.chart.selectAll('rect')
             .data([])
             .exit().remove();
-        
+
         let years = []
         vis.data.forEach(d => years.push(d.year));
         vis.xScale.domain(years);
@@ -90,7 +137,7 @@ class StackChart {
     renderVis() {
         let vis = this;
         let color = '';
-        
+
         vis.chart
             .selectAll("category")
             .data(vis.stackedData)
@@ -116,16 +163,16 @@ class StackChart {
                 // console.log(vis.yScale(d[0]));
                 vis.yScale(d[0]) - vis.yScale(d[1]))
             .attr("width", vis.xScale.bandwidth())
-            .on('mouseover', (event,d) => {
+            .on('mouseover', (event, d) => {
                 console.log("mouse over! ");
                 console.log(event);
                 console.log(d);
-  
-              d3.select(vis.tp)
-                .style('display', 'block')
-                .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')   
-                .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
-                .html(`
+
+                d3.select(vis.tp)
+                    .style('display', 'block')
+                    .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')
+                    .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+                    .html(`
                   <div class="tooltip-title">${d.data.year}</div>
                   <ul>
                     <li> CO: ${d.data.co}</li>
@@ -138,7 +185,7 @@ class StackChart {
                 `);
             })
             .on('mouseleave', () => {
-              d3.select(vis.tp).style('display', 'none');
+                d3.select(vis.tp).style('display', 'none');
             });
 
         vis.xAxisG.call(vis.xAxis);
