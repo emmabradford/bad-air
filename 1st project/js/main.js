@@ -306,7 +306,7 @@ d3.select('#county1').on('change', function () {
   c1 = myArray[1];
   //console.log(choice1);
   //console.log(state);
- // console.log(c1);
+  // console.log(c1);
 
   let medianPerYear1 = [];
   data1.filter(d => d.State == s1).filter(d => d.County == c1).forEach(function (d) {
@@ -542,7 +542,7 @@ d3.select('#year').on('change', function () {
           //console.log(countyFips[i]);
           //console.log(y)
           let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
-           // console.log(countyInfo[0]);
+          // console.log(countyInfo[0]);
           if (countyInfo.length != 0) {
             d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': countyInfo[0].MaxAQI };
             d.properties.value = +d.properties.value;
@@ -554,13 +554,13 @@ d3.select('#year').on('change', function () {
           //console.log(d.properties);
         }
       }
-      
+
     });
     console.log('new');
     choroplethMap.data = dataMap[0];
     console.log(dataMap[0]);
     choroplethMap.updateVis();
-  //choroplethMap.updateVis();
+    //choroplethMap.updateVis();
 
     // choroplethMapNew = new ChoroplethMap({
     //   parentElement: '.viz'
@@ -569,9 +569,242 @@ d3.select('#year').on('change', function () {
     // }, dataMap[0]);
     // choroplethMapNew.tp = '#tooltip10';
   }).catch(error => console.error(error));
-  
+
   // choroplethMap = choroplethMapNew;
   // choroplethMap.data = dataMap[0];
   // choroplethMap.updateVis();
+
+});
+
+d3.select('#ColorBy').on('change', function () {
+  cb = d3.select(this).property('value');
+  if (cb == 'DominatPolutant') {
+    //choroplethMap.deleteVis();
+    Promise.all([
+      d3.json('data/counties-10m.json'),
+      d3.csv('data/fips.csv')
+    ]).then(dataMap => {
+      geoData = dataMap[0];
+      countyFips = dataMap[1];
+
+      //console.log(geoData);
+
+      geoData.objects.counties.geometries.forEach(d => {
+
+        //geoData.objects.collection.geometries.forEach(d => {
+        for (let i = 0; i < countyFips.length; i++) {
+
+          if (d.id == countyFips[i].cnty_fips) {
+            // console.log(d);
+            console.log(countyFips[i]);
+            //console.log(y)
+            let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
+             console.log(countyInfo[0]);
+            //console.log(Object.keys(countyInfo).reduce(function(a, b){ return obj[a] > obj[b] ? a : b }));
+
+            if (countyInfo.length != 0) {
+              let polutantInfo=[countyInfo[0].DaysCO, countyInfo[0].DaysNO2, countyInfo[0].DaysOzone, countyInfo[0].DaysPM2, countyInfo[0].DaysPM10, countyInfo[0].DaysSO2];
+              //maxpol=Object.keys(polutantInfo);//.reduce(function(a, b){ return polutantInfo[a] > polutantInfo[b] ? a : b });
+              //polliies = maxpol.Select(key => polutantInfo[key]).ToList();
+              console.log(polutantInfo);
+              let maxpolval = polutantInfo.reduce(function (p, v) {
+                return ( p > v ? p : v );
+              })
+              console.log(maxpolval);
+              
+              //console.log(Object.keys(polutantInfo).reduce(function(a, b){ return polutantInfo[a] > polutantInfo[b] ? a : b }));
+
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': maxpolval };
+              d.properties.value = +d.properties.value;
+            }
+            else {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': 0 };
+              d.properties.value = +d.properties.value;
+            }
+            //console.log(d.properties);
+          }
+        }
+
+      });
+      console.log('new');
+      choroplethMap.data = dataMap[0];
+      console.log(dataMap[0]);
+      choroplethMap.updateVis();
+      //choroplethMap.updateVis();
+
+      // choroplethMapNew = new ChoroplethMap({
+      //   parentElement: '.viz'
+      //   //'containerHeight': 1000,
+      //   //  'containerWidth': 1100
+      // }, dataMap[0]);
+      // choroplethMapNew.tp = '#tooltip10';
+    }).catch(error => console.error(error));
+
+    // choroplethMap = choroplethMapNew;
+    // choroplethMap.data = dataMap[0];
+    // choroplethMap.updateVis();
+  }
+  else if(cb == 'MedianAQI')
+  {
+    //choroplethMap.deleteVis();
+    Promise.all([
+      d3.json('data/counties-10m.json'),
+      d3.csv('data/fips.csv')
+    ]).then(dataMap => {
+      geoData = dataMap[0];
+      countyFips = dataMap[1];
+
+      //console.log(geoData);
+
+      geoData.objects.counties.geometries.forEach(d => {
+
+        //geoData.objects.collection.geometries.forEach(d => {
+        for (let i = 0; i < countyFips.length; i++) {
+
+          if (d.id == countyFips[i].cnty_fips) {
+            // console.log(d);
+            //console.log(countyFips[i]);
+            //console.log(y)
+            let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
+            // console.log(countyInfo[0]);
+            if (countyInfo.length != 0) {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': countyInfo[0].MedianAQI };
+              d.properties.value = +d.properties.value;
+            }
+            else {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': 0 };
+              d.properties.value = +d.properties.value;
+            }
+            //console.log(d.properties);
+          }
+        }
+
+      });
+      console.log('new');
+      choroplethMap.data = dataMap[0];
+      console.log(dataMap[0]);
+      choroplethMap.updateVis();
+      //choroplethMap.updateVis();
+
+      // choroplethMapNew = new ChoroplethMap({
+      //   parentElement: '.viz'
+      //   //'containerHeight': 1000,
+      //   //  'containerWidth': 1100
+      // }, dataMap[0]);
+      // choroplethMapNew.tp = '#tooltip10';
+    }).catch(error => console.error(error));
+
+    // choroplethMap = choroplethMapNew;
+    // choroplethMap.data = dataMap[0];
+    // choroplethMap.updateVis();
+  }
+  else if(cd == 'Percentile90thAQI')
+  {
+    //choroplethMap.deleteVis();
+    Promise.all([
+      d3.json('data/counties-10m.json'),
+      d3.csv('data/fips.csv')
+    ]).then(dataMap => {
+      geoData = dataMap[0];
+      countyFips = dataMap[1];
+
+      //console.log(geoData);
+
+      geoData.objects.counties.geometries.forEach(d => {
+
+        //geoData.objects.collection.geometries.forEach(d => {
+        for (let i = 0; i < countyFips.length; i++) {
+
+          if (d.id == countyFips[i].cnty_fips) {
+            // console.log(d);
+            //console.log(countyFips[i]);
+            //console.log(y)
+            let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
+            // console.log(countyInfo[0]);
+            if (countyInfo.length != 0) {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': countyInfo[0].Percentile90thAQI };
+              d.properties.value = +d.properties.value;
+            }
+            else {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': 0 };
+              d.properties.value = +d.properties.value;
+            }
+            //console.log(d.properties);
+          }
+        }
+
+      });
+      console.log('new');
+      choroplethMap.data = dataMap[0];
+      console.log(dataMap[0]);
+      choroplethMap.updateVis();
+      //choroplethMap.updateVis();
+
+      // choroplethMapNew = new ChoroplethMap({
+      //   parentElement: '.viz'
+      //   //'containerHeight': 1000,
+      //   //  'containerWidth': 1100
+      // }, dataMap[0]);
+      // choroplethMapNew.tp = '#tooltip10';
+    }).catch(error => console.error(error));
+
+    // choroplethMap = choroplethMapNew;
+    // choroplethMap.data = dataMap[0];
+    // choroplethMap.updateVis();
+  }
+  else if(cd == 'MaxAQI')
+  {
+    //choroplethMap.deleteVis();
+    Promise.all([
+      d3.json('data/counties-10m.json'),
+      d3.csv('data/fips.csv')
+    ]).then(dataMap => {
+      geoData = dataMap[0];
+      countyFips = dataMap[1];
+
+      //console.log(geoData);
+
+      geoData.objects.counties.geometries.forEach(d => {
+
+        //geoData.objects.collection.geometries.forEach(d => {
+        for (let i = 0; i < countyFips.length; i++) {
+
+          if (d.id == countyFips[i].cnty_fips) {
+            // console.log(d);
+            //console.log(countyFips[i]);
+            //console.log(y)
+            let countyInfo = data1.filter(d => d.Year == y).filter(d => d.State == countyFips[i].state).filter(d => d.County == countyFips[i].county)
+            // console.log(countyInfo[0]);
+            if (countyInfo.length != 0) {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': countyInfo[0].MaxAQI };
+              d.properties.value = +d.properties.value;
+            }
+            else {
+              d.properties = { 'county': countyFips[i].county, 'state': countyFips[i].state, 'value': 0 };
+              d.properties.value = +d.properties.value;
+            }
+            //console.log(d.properties);
+          }
+        }
+
+      });
+      console.log('new');
+      choroplethMap.data = dataMap[0];
+      console.log(dataMap[0]);
+      choroplethMap.updateVis();
+      //choroplethMap.updateVis();
+
+      // choroplethMapNew = new ChoroplethMap({
+      //   parentElement: '.viz'
+      //   //'containerHeight': 1000,
+      //   //  'containerWidth': 1100
+      // }, dataMap[0]);
+      // choroplethMapNew.tp = '#tooltip10';
+    }).catch(error => console.error(error));
+
+    // choroplethMap = choroplethMapNew;
+    // choroplethMap.data = dataMap[0];
+    // choroplethMap.updateVis();
+  }
 
 });
