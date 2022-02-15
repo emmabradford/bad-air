@@ -71,6 +71,12 @@ class ChoroplethMap {
 
 
         let vis = this;
+      //  vis.g.selectAll("path") .remove(); 
+        // vis.counties = vis.g.append("g")
+        //         .attr("id", "counties")
+        //         .selectAll("path")
+        //         .data(topojson.feature(vis.us, vis.us.objects.counties).features)
+        //         .enter().append("path")
         console.log(vis.data);
         // vis.chart.selectAll('path')
         //     .data([])
@@ -187,7 +193,7 @@ class ChoroplethMap {
 
     }
     updateColors(){
-        
+
     }
 
     // deleteVis() {
