@@ -8,6 +8,7 @@ class PieChart {
         }
 
         this.data = _data;
+        console.log(this.data);
         this.initVis();
     }
 
@@ -35,6 +36,40 @@ class PieChart {
 
     updateVis() {
         let vis = this;
+
+        vis.keysAll = [];
+        vis.data.forEach(d => {
+            //console.log(d);
+            vis.keysAll.push(d.key)});
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+        
+        vis.keys = vis.keysAll.filter(onlyUnique);
+        // console.log(vis.keysAll);
+        console.log(vis.keys);
+
+        vis.svg.selectAll("mydots")
+            .data(vis.keys)
+            .enter()
+            .append("circle")
+            .attr("cx", 480)
+            .attr("cy", function (d, i) { return 10 + i * 25 }) 
+            .attr("r", 4)
+            .style("fill", function (d) { return vis.colorPalette(d) })
+
+        // Add one dot in the legend for each name.
+        vis.svg.selectAll("mylabels")
+            .data(vis.keys)
+            .enter()
+            .append("text")
+            .attr("x", 500)
+            .attr("y", function (d, i) { return 10 + i * 25 }) 
+            .style("fill", function (d) { return vis.colorPalette(d) })
+            .text(function (d) { return d })
+            .attr("text-anchor", "left")
+            .style("alignment-baseline", "middle")
+
         vis.chart.selectAll('path')
             .data([])
             .exit().remove();
