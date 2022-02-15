@@ -32,7 +32,9 @@ class StackChart {
             .paddingInner(0.2)
             .paddingOuter(0.2);
 
+        //vis.yScale = d3.scaleLinear().range([vis.height, 0]).nice();
         vis.yScale = d3.scaleLinear().range([vis.height, 0]).nice();
+
 
         vis.xAxis = d3.axisBottom(vis.xScale);
         vis.yAxis = d3.axisLeft(vis.yScale).ticks(10);
@@ -97,7 +99,7 @@ class StackChart {
             .enter()
             .append("circle")
             .attr("cx", 500)
-            .attr("cy", function (d, i) { return 10 + i * 10 }) 
+            .attr("cy", function (d, i) { return 15 + i * 10 }) 
             .attr("r", 4)
             .style("fill", function (d) { return vis.colorPalette(d) })
 
@@ -107,7 +109,7 @@ class StackChart {
             .enter()
             .append("text")
             .attr("x", 520)
-            .attr("y", function (d, i) { return 10 + i * 10 }) 
+            .attr("y", function (d, i) { return 15 + i * 10 }) 
             .style("fill", function (d) { return vis.colorPalette(d) })
             .text(function (d) { return d })
             .attr("text-anchor", "left")
@@ -150,7 +152,7 @@ class StackChart {
 
         })
 
-        vis.yScale.domain([0, d3.max(values)])
+        vis.yScale.domain([0, d3.max(values)+100])
         //console.log('made scales');
 
         vis.stackedData = vis.stack(vis.data);
