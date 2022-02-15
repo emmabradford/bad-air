@@ -62,7 +62,7 @@ class ChoroplethMap {
             .attr('width', vis.config.legendRectWidth)
             .attr('height', vis.config.legendRectHeight);
 
-            vis.legendTitle = vis.legend.append('text')
+        vis.legendTitle = vis.legend.append('text')
             .attr('class', 'legend-title')
             .attr('dy', '.35em')
             .attr('y', -10)
@@ -84,19 +84,19 @@ class ChoroplethMap {
             .attr('text-anchor', 'middle')
             .attr('dy', '.35em')
             .attr('y', 20)
-            .attr('x', (d,index) => {
+            .attr('x', (d, index) => {
                 return index == 0 ? 0 : vis.config.legendRectWidth;
             })
-            .text(d => Math.round(d.value * 10 ) / 10);
+            .text(d => Math.round(d.value * 10) / 10);
 
-            vis.linearGradient.selectAll('stop')
+        vis.linearGradient.selectAll('stop')
             .data(vis.legendStops)
-          .join('stop')
+            .join('stop')
             .attr('offset', d => d.offset)
             .attr('stop-color', d => d.color);
-    
-            vis.legendRect.attr('fill', 'url(#legend-gradient)');
-    
+
+        vis.legendRect.attr('fill', 'url(#legend-gradient)');
+
         vis.renderVis();
     }
 
