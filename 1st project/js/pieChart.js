@@ -8,10 +8,6 @@ class PieChart {
         }
 
         this.data = _data;
-        // this.data2= _data2
-        //console.log(this.data);
-        //console.log(this.data2);
-        // Call a class function
         this.initVis();
     }
 
@@ -43,12 +39,13 @@ class PieChart {
             .data([])
             .exit().remove();
        // console.log('data')
+        
         vis.pie = d3.pie()
             .value(function (d) {
                // console.log(d);
                 return d.value
             })
-        //vis.data_ready = vis.pie(Object.entries(vis.data));
+
         vis.data_ready = vis.pie(vis.data);
         //console.log('data ready');
 
@@ -56,7 +53,6 @@ class PieChart {
             .data(vis.data_ready)
             .enter()
             .append('path')
-            //.join('path')
             .attr('d', d3.arc()
                 .innerRadius(0)
                 .outerRadius(vis.radius)
@@ -86,8 +82,6 @@ class PieChart {
             })
             .on('mouseleave', () => {
               d3.select(vis.tp).style('display', 'none');
-            });
-            
+            }); 
     }
-
 }

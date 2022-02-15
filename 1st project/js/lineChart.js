@@ -6,9 +6,7 @@ class LineChart {
             containerHeight: _config.containerHeight || 200,
             margin: { top: 10, bottom: 30, right: 50, left: 50 }
         }
-
         this.data = _data;
-        // this.data2= _data2
         console.log(this.data);
         //console.log(this.data2);
         // Call a class function
@@ -17,7 +15,6 @@ class LineChart {
 
     initVis() {
         // console.log("inside line");
-
         let vis = this;
         // console.log(vis.data);
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
@@ -30,14 +27,12 @@ class LineChart {
         vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
         vis.colorPalette.domain("percent", "max", "median", "daysaqi");
 
-
         vis.xScale = d3.scaleLinear()
             .domain(d3.extent(vis.data, vis.xValue)) //d3.min(vis.data, d => d.year), d3.max(vis.data, d => d.year) );
             .range([0, vis.width]);
 
         vis.yScale = d3.scaleLinear()
             .domain([-10, d3.max(vis.data, d => d.value)])
-            // .domain(d3.extent(vis.data, vis.yValue))
             .range([vis.height, 0])
             .nice();
         //console.log('made scales');
@@ -59,27 +54,7 @@ class LineChart {
             .attr('class', 'axis x-axis')
             .attr('transform', `translate(0,${vis.height})`)
             .call(vis.xAxis);
-        // vis.trackingArea = vis.chart.append('rect')
-        //     .attr('width', vis.width)
-        //     .attr('height', vis.height)
-        //     .attr('fill', 'none')
-        //     .attr('pointer-events', 'all');
-        // vis.tooltip = vis.chart.append('g')
-        //     .attr('class', 'tooltip')
-        //     .style('display', 'none');
 
-        // vis.tooltip.append('circle')
-        //     .attr('r', 4);
-
-        // vis.tooltip.append('text');
-        // vis.xAxis = d3.axisBottom(vis.xScale);
-        // vis.yAxis = d3.axisLeft(vis.yScale);
-
-        // console.log('made axis');
-        // vis.xAxisG = vis.chart.append('g')
-        //     .attr('class', 'axis x-axis')
-        //     .attr('transform', `translate(0,${vis.height})`)
-        //     .call(vis.xAxis);
         vis.updateVis();
     }
 
@@ -91,62 +66,20 @@ class LineChart {
             .data([])
             .exit().remove();
         // console.log(vis.data);
-        //console.log("inside line");
-
-        //let vis = this;
-        //console.log(vis.data);
-        // vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
-        // vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
-
-        // vis.xValue = d => d.year;
-        // vis.yValue = d => d.value;
-
-        // vis.colorPalette = d3.scaleOrdinal(d3.schemeTableau10);
-        // vis.colorPalette.domain("percent", "max", "median", "daysaqi");
-
 
         vis.xScale = d3.scaleLinear()
             .domain(d3.extent(vis.data, vis.xValue)) //d3.min(vis.data, d => d.year), d3.max(vis.data, d => d.year) );
             .range([0, vis.width])
-        // .nice();
 
         vis.yScale = d3.scaleLinear()
             .domain([-10, d3.max(vis.data, d => d.value)])
-            // .domain(d3.extent(vis.data, vis.yValue))
             .range([vis.height, 0])
             .nice();
 
-        // vis.xAxis = d3.axisBottom(vis.xScale);
-        // vis.yAxis = d3.axisLeft(vis.yScale);
         console.log('made scales');
-
-        // vis.svg = d3.select(vis.config.parentElement)
-        //     .attr('width', vis.config.containerWidth)
-        //     .attr('height', vis.config.containerHeight);
-
-        // vis.chart = vis.svg.append('g')
-        //     .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-
-        // vis.xAxis = d3.axisBottom(vis.xScale);
-        // vis.yAxis = d3.axisLeft(vis.yScale);
-
-        // console.log('made axis');
-        // vis.xAxisG = vis.chart.append('g')
-        //     .attr('class', 'axis x-axis')
-        //     .attr('transform', `translate(0,${vis.height})`)
-        //     .call(vis.xAxis);
 
         vis.groups = d3.group(vis.data, d => d.type)
 
-        // vis.yAxisG = vis.chart.append('g')
-        //     .attr('class', 'axis y-axis')
-        //     .call(vis.yAxis);
-
-        // vis.xAxisG = vis.chart.append('g')
-        //     .attr('class', 'axis x-axis')
-        //     .attr('transform', `translate(0,${vis.height})`)
-        //     .call(vis.xAxis);
-        // console.log('made axis group');
         vis.area = d3.area()
             .x(d => vis.xScale(vis.xValue(d)))
             .y1(d => vis.yScale(vis.yValue(d)))
@@ -161,7 +94,6 @@ class LineChart {
 
         vis.circles = vis.chart.selectAll('circle')
             .data(vis.data)
-            //.enter()
             .join('circle') // join rerenders the data that is filered
             .attr('fill', (d) => vis.colorPalette(d.type))
             .attr('opacity', .8)
@@ -170,7 +102,6 @@ class LineChart {
             .attr('r', 4)
             .attr('cy', (d) => vis.yScale(d.value))
             .attr('cx', (d) => vis.xScale(d.year));;
-
         // console.log("made circules");
 
         vis.chart.selectAll(".line")
