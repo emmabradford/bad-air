@@ -352,6 +352,8 @@ d3.csv('data/HamiltonCountyData.csv')
     console.error('Error loading the data');
   });
 
+
+//drop down county 1
 d3.select('#county1').on('change', function () {
   let choice1 = d3.select(this).property('value');
   let myArray = choice1.split(",");
@@ -421,6 +423,7 @@ d3.select('#county1').on('change', function () {
   pols.updateVis();
 });
 
+//drop down county 2
 d3.select('#county2').on('change', function () {
   let choice1 = d3.select(this).property('value');
   let myArray = choice1.split(",");
@@ -492,6 +495,7 @@ d3.select('#county2').on('change', function () {
   pols2.updateVis();
 });
 
+//drop down year
 d3.select('#year').on('change', function () {
   y = d3.select(this).property('value');
   //console.log(y);
@@ -749,6 +753,7 @@ d3.select('#year').on('change', function () {
   }
 });
 
+//drop down color by
 d3.select('#ColorBy').on('change', function () {
   cb = d3.select(this).property('value');
   if (cb == 'DominatPolutant') {

@@ -31,7 +31,7 @@ class LineChart {
         vis.colorPalette.domain("percent", "max", "median", "daysaqi");
 
         vis.xScale = d3.scaleLinear()
-            .domain(d3.extent(vis.data, vis.xValue)) //d3.min(vis.data, d => d.year), d3.max(vis.data, d => d.year) );
+            .domain(d3.extent(vis.data, vis.xValue)) 
             .range([0, vis.width]);
 
         vis.yScale = d3.scaleLinear()
@@ -147,7 +147,7 @@ class LineChart {
             .attr('cx', (d) => vis.xScale(d.year));;
         // console.log("made circules");
 
-        vis.chart.selectAll(".line")
+        vis.prevline = vis.chart.selectAll(".line")
             .data(vis.groups)
             .join("path")
             .attr('stroke', (d) => vis.colorPalette(d[0]))
@@ -160,7 +160,22 @@ class LineChart {
                     (d[1])
             });
 
-        vis.circles
+        //     console.log(vis.prevline._groups[0]);
+
+        vis.chart.selectAll(".line")
+            .data(vis.groups)
+            .join("path")
+            .attr('stroke', (d) => vis.colorPalette(d[0]))
+            .attr('fill', "none")
+            .attr('stroke-width', 2)
+            //.attr('d', vis.prevline)
+            //.transition()
+            .attr('d', function (d) {
+                return d3.line()
+                    .x(function (d) { return vis.xScale(d.year); })
+                    .y(function (d) { return vis.yScale(d.value); })
+                    (d[1])
+            })
             .on('mouseover', (event, d) => {
                 console.log("mouse over! ");
                 console.log(event);
@@ -181,6 +196,28 @@ class LineChart {
             .on('mouseleave', () => {
                 d3.select(vis.tp).style('display', 'none');
             });
+
+        // vis.circles
+        //     .on('mouseover', (event, d) => {
+        //         console.log("mouse over! ");
+        //         console.log(event);
+        //         console.log(d);
+
+        //         d3.select(vis.tp)
+        //             .style('display', 'block')
+        //             .style('left', (event.pageX + vis.config.tooltipPadding) + 'px')
+        //             .style('top', (event.pageY + vis.config.tooltipPadding) + 'px')
+        //             .html(`
+        //         <div class="tooltip-title">${d.year}</div>
+        //         <ul>
+        //           <li> y value: ${d.value}</li>
+        //           <li>days type of data: ${d.type}</li>
+        //         </ul>
+        //       `);
+        //     })
+        //     .on('mouseleave', () => {
+        //         d3.select(vis.tp).style('display', 'none');
+        //     });
         vis.xAxisG.call(vis.xAxis);
         vis.yAxisG.call(vis.yAxis);
         //console.log('made chart');
